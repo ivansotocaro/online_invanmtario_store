@@ -15,7 +15,8 @@ class Buy extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class,'detail_buy', 'buy_id', 'product_id')
+                        ->withPivot('quantity', 'total');
     }
 
     public function client(): BelongsTo

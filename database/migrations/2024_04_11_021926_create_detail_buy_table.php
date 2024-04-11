@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('buy_id');
             $table->integer('quantity');
-            $table->decimal('price_unit', 10, 2);
             $table->decimal('total', 10, 2);
             $table->foreign('product_id')
                 ->references('id')

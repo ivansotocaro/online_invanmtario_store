@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BuyController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -42,6 +43,7 @@ Route::post('/client/store', [ClientController::class, 'store'])->name('client.s
 Route::put('/client/{id}', [ClientController::class, 'update'])->name('client.update');
 Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
 
-
+//Buy
+Route::post('/buy/store', [BuyController::class, 'store'])->name('buy.store');
 
 require __DIR__.'/auth.php';
