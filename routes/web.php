@@ -29,7 +29,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/productsAvailable', [ProductController::class, 'getProductsAvailable'])->name('product.available');
 Route::get('/product/{id}', [ProductController::class, 'getProductById'])->name('product.detail');
-
+Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
 
 
 require __DIR__.'/auth.php';
