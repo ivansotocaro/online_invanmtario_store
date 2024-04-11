@@ -3,23 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function getProductsAvailable(){
+    public function getProductsAvailable(): JsonResponse
+    {
         $productosAvailable = Product::where('stock', '>', 0)->
-            where('is_active', 1)->get();
-        return $productosAvailable;
-//        return response()->json(['ok' => 'true', 'data' => $productosAvailable]);
+                                where('is_active', 1)->get();
+
+        return response()->json([
+            'status' => 'ok',
+            'products' => $productosAvailable,
+        ]);
     }
 
-    public function getProductById($id){
-        $producto = Product::where('id', $id)
+    public function getProductById($id)
+    {
+
+        $product = Product::where('id', $id)
             ->where('is_active', 1)
             ->first();
-        return $producto;
-//        return response()->json(['ok' => 'true', 'data' => $productosAvailable]);
+        return response()->json([
+            'status' => 'ok',
+            'product' => $product,
+        ]);
     }
 
     public function store(Request $request){
@@ -38,7 +47,10 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->save();
 
-        return $product;
+        return response()->json([
+            'status' => 'ok',
+            'message' => "usuario creado",
+        ]);
     }
 
     public function update(Request $request, $id){
@@ -53,7 +65,10 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->save();
 
-        return $product;
+        return response()->json([
+            'status' => 'ok',
+            'message' => "usuario actualizado",
+        ]);
     }
 
     public function destroy($id)
@@ -64,7 +79,10 @@ class ProductController extends Controller
         $product->is_active = 0; // Establecer el estado is_active a 0 (inactivo)
         $product->save(); // Guardar el producto actualizado en la base de datos
 
-        return $product;
+        return response()->json([
+            'status' => 'ok',
+            'message' => "usuario eliminado",
+        ]);
     }
 
 }

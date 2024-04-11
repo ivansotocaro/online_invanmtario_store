@@ -32,15 +32,23 @@ class BuyController extends Controller
 
                 if ($product->stock >= $detalle['cantidad']) {
                     $product->stock -= $detalle['cantidad'];
+
+                    $totalfinal = ($product->price * $detalle['cantidad']) == $detalle['total']
+                                    ? $detalle['total'] : $product->price * $detalle['cantidad'];
+
+
                     $product->save();
 
                     $detalleCompra[$detalle['productoId']] = [
                         'quantity' => $detalle['cantidad'],
-                        'total' => $detalle['total'],
+                        'total' => $totalfinal,
                     ];
                 } else {
                     DB::rollBack(); // Revertir cualquier cambio en la base de datos
-                    return 'No hay suficientes productos en el stock';
+                    return response()->json([
+                        'status' => 'ok',
+                        'message' => "No hay suficiente producto de ". $product->name ." en el inventario",
+                    ]);
                 }
             }
 
@@ -48,7 +56,10 @@ class BuyController extends Controller
 
             DB::commit(); // Confirmar los cambios en la base de datos
 
-            return "Compra registrada correctamente";
+            return response()->json([
+                'status' => 'ok',
+                'message' => "Compra realizada",
+            ]);
         } catch (\Exception $e) {
             DB::rollBack(); // Revertir cualquier cambio en la base de datos en caso de excepción
             return "Ha ocurrido un error al procesar la compra: " . $e->getMessage();

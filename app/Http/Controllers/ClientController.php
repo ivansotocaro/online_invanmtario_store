@@ -10,7 +10,11 @@ class ClientController extends Controller
     public function allClient()
     {
         $clients = Client::all();
-        return $clients;
+
+        return response()->json([
+            'status' => 'ok',
+            'clients' => $clients,
+        ]);
     }
 
     public function store(Request $request)
@@ -27,13 +31,20 @@ class ClientController extends Controller
         $client->phone = $request->phone;
         $client->save();
 
-        return $client;
+        return response()->json([
+            'status' => 'ok',
+            'message' => "usuario creado",
+        ]);
     }
 
     public function getClientById($id)
     {
         $client = Client::find($id);
-        return $client;
+
+        return response()->json([
+            'status' => 'ok',
+            'Client' => $client,
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -45,7 +56,10 @@ class ClientController extends Controller
         $client->phone = $request->phone;
         $client->save();
 
-        return true;
+        return response()->json([
+        'status' => 'ok',
+        'message' => "Cliente actualizado",
+    ]);
     }
 
     public function destroy($id)
@@ -53,6 +67,9 @@ class ClientController extends Controller
         $client = Client::find($id);
         $client->delete();
 
-        return true;
+        return response()->json([
+            'status' => 'ok',
+            'message' => "Cliente eliminado",
+        ]);
     }
 }
